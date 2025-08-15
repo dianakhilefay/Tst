@@ -1,286 +1,131 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Media API – Random • Search • Stream • Download</title>
-<style>
-:root{--bg:#0f1115;--card:#171a21;--muted:#9aa4b2;--txt:#e6e9ef;--accent:#4da3ff;--good:#20c997;--bad:#ff6b6b;--r:14px}
-*{box-sizing:border-box}html,body{height:100%}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:#0f1115;color:var(--txt);display:flex;flex-direction:column;align-items:center}
-header{width:min(1200px,100%);padding:16px clamp(12px,3vw,24px);display:flex;gap:12px;align-items:center;justify-content:space-between;position:sticky;top:0;background:#0f1115cc;border-bottom:1px solid #202635;backdrop-filter:blur(6px);flex-wrap:wrap;z-index:5}
-.brand{display:flex;gap:10px;align-items:center}
-.logo{width:34px;aspect-ratio:1;border-radius:10px;background:radial-gradient(60% 60% at 30% 30%,#6cc1ff,#4da3ff 40%,#2b6fff 70%,#1a2f66)}
-h1{margin:0;font-size:clamp(16px,2.2vw,20px)}
-select,input,button{border:1px solid #243048;background:#0c111a;color:var(--txt);border-radius:10px;padding:10px 12px}
-button{cursor:pointer;font-weight:600}
-.primary{background:linear-gradient(180deg,#357dff,#2b6fff);border-color:#2b6fff;color:#fff}
-.pill{border-radius:999px}
-.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-main{width:min(1200px,100%);padding:clamp(12px,3vw,24px);display:grid;gap:18px}
-.grid{display:grid;gap:18px;grid-template-columns:1fr}
-@media(min-width:900px){.grid{grid-template-columns:1.1fr .9fr}}
-.card{background:linear-gradient(180deg,#121621,#0e121a);border:1px solid #222a3a;border-radius:var(--r);padding:16px}
-.title{font-size:clamp(18px,2.4vw,22px);margin:0 0 8px}
-.extra{min-height:1.2em;color:#d5e0ff;font-weight:600;margin:0 0 12px}
-.muted{color:var(--muted);font-size:14px}
-.media{aspect-ratio:16/9;border:1px solid #252f42;border-radius:12px;overflow:hidden;background:#000;margin:10px 0}
-.media video{width:100%;height:100%;display:block;background:#000}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:14px}
-.k{color:#9aa4b2}.v{color:#e6e9ef}
-.badge{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #243048;background:#0f1522;color:#cfe0ff}
-.ok{border-color:#1f4636;background:#0f1f1a;color:#b9f5d0}
-.err{border-color:#4a2a2a;background:#241416;color:#ffb3b3}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.code{display:block;background:#0b0f16;border:1px solid #1f2736;border-radius:8px;padding:8px 10px;overflow:auto;white-space:nowrap}
-.list{display:grid;gap:10px}
-.item{padding:10px;border:1px solid #1f2736;border-radius:10px;background:#101726;cursor:pointer}
-.item:hover{background:#111c2c}
-footer{opacity:.7;font-size:13px;padding:18px;text-align:center}
-
-.gate{position:fixed;inset:0;display:grid;place-items:center;background:#0009;backdrop-filter:blur(6px);z-index:10}
-.gate .box{width:min(520px,92%);background:#0f141d;border:1px solid #243048;border-radius:16px;padding:20px;text-align:center}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TikTok API Tester — Vezxa</title>
+  <style>
+    :root { --bg:#0f1220; --panel:#171b2e; --text:#e9ecff; --muted:#9aa3c7; --accent:#7c5cff; --danger:#ff5468; --ok:#41d392; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial; background:linear-gradient(180deg,#0f1220 0%, #0b0e1a 100%); color:var(--text); }
+    header { padding:24px 18px; border-bottom: 1px solid #232846; background: rgba(15,18,32,.6); backdrop-filter: blur(8px); position:sticky; top:0; z-index: 5; }
+    h1 { margin:0; font-size:20px; letter-spacing:.3px; }
+    main { padding: 22px; max-width: 980px; margin: 0 auto; }
+    .card { background: var(--panel); border:1px solid #232846; border-radius:16px; padding:16px; margin-bottom:16px; }
+    .row { display:flex; gap:12px; flex-wrap: wrap; }
+    .field { flex:1 1 320px; display:flex; flex-direction: column; gap:6px; }
+    label { font-size:13px; color:var(--muted); }
+    input[type="text"] { background:#0f1326; border:1px solid #232846; color:var(--text); padding:12px 14px; border-radius:12px; width:100%; outline:none; }
+    input[type="text"]::placeholder{ color:#65709b; }
+    .actions { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
+    button { appearance:none; border:none; border-radius:12px; padding:12px 16px; font-weight:600; cursor:pointer; }
+    .btn-primary { background: var(--accent); color:white; }
+    .btn-secondary { background:#232846; color:var(--text); }
+    .btn-danger { background: var(--danger); color:white; }
+    .status { font-size:13px; color:var(--muted); }
+    pre { width:100%; overflow:auto; background:#0b0f1f; border:1px solid #232846; color:#cfe1ff; padding:12px; border-radius:12px; margin:0; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; }
+    .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+    @media (min-width: 880px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .pill { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#232846; color:#c9d2ff; font-size:12px; border:1px solid #2c3156; }
+    .ok { color: var(--ok); }
+    .err { color: var(--danger); }
+    .thumb { width:100%; max-height: 260px; object-fit: cover; border-radius:12px; border:1px solid #232846; background:#0b0f1f; }
+    footer { text-align:center; color:#7781ad; font-size:12px; padding: 18px; }
+    .help { font-size:13px; color:#a9b3dc; }
+  </style>
 </head>
 <body>
-<header>
-  <div class="brand"><div class="logo"></div><h1>Media API – Random • Search • Stream • Download</h1></div>
-  <div class="bar">
-    <select id="platform">
-      <option value="xnxx">xnxx</option>
-      <option value="pornhub">pornhub</option>
-      <option value="xvideos">xvideos</option>
-      <option value="redtube">redtube</option>
-      <option value="xhamster">xhamster</option>
-      <option value="youporn">youporn</option>
-    </select>
-    <button id="btnRandom" class="primary pill">Random</button>
-  </div>
-  <div class="bar" style="flex:1 1 280px">
-    <input id="q" placeholder="Recherche…">
-    <button id="btnSearch" class="pill">Rechercher</button>
-    <button id="btnJSON" class="pill">JSON</button>
-  </div>
-</header>
+  <header>
+    <h1>Tester TikTok API — Vezxa</h1>
+  </header>
 
-<main>
-  <section class="grid">
-    <article class="card">
-      <h2 class="title" id="title">Aucun résultat</h2>
-      <div class="extra" id="extra"></div>
-      <div class="row" style="margin:6px 0 10px">
-        <span id="status" class="badge">Statut : —</span>
-        <span id="type" class="badge">Type : —</span>
-      </div>
-
-      <div id="media" class="media"></div>
-
-      <div class="kv" style="margin:8px 0 12px">
-        <div class="k">Durée</div><div class="v" id="kvDuration">—</div>
-        <div class="k">Note</div><div class="v" id="kvRating">—</div>
-        <div class="k">Vues</div><div class="v" id="kvViews">—</div>
-        <div class="k">ID</div><div class="v" id="kvId">—</div>
-      </div>
-
+  <main>
+    <section class="card">
       <div class="row">
-        <a id="openStream" class="pill" href="#" target="_blank" rel="noopener">Ouvrir le stream</a>
-        <button id="copyStream" class="pill">Copier stream</button>
+        <div class="field">
+          <label>Endpoint (modifiable)</label>
+          <input id="endpoint" type="text" value="https://my-vezxa-api-seven.vercel.app/api/tiktok" />
+        </div>
+        <div class="field">
+          <label>URL de la vidéo TikTok</label>
+          <input id="tturl" type="text" placeholder="https://www.tiktok.com/@user/video/xxxxxxxxxxxx" />
+        </div>
       </div>
-      <div class="code" id="codeStream">—</div>
-
-      <div class="row" style="margin-top:8px">
-        <a id="openDownload" class="pill" href="#" target="_blank" rel="noopener">Télécharger</a>
-        <button id="copyDownload" class="pill">Copier download</button>
+      <div class="actions" style="margin-top:10px;">
+        <button id="go" class="btn-primary">Tester</button>
+        <button id="sample" class="btn-secondary">Exemple</button>
+        <button id="clear" class="btn-danger">Vider</button>
+        <span id="stat" class="status">Prêt.</span>
       </div>
-      <div class="code" id="codeDownload">—</div>
-    </article>
+      <p class="help" style="margin-top:8px;">Astuce : l’API attend <code>?url=&lt;Lien TikTok&gt;</code>.</p>
+    </section>
 
-    <aside class="card">
-      <h3 style="margin:0 0 10px">Résultats de recherche</h3>
-      <div id="results" class="list"></div>
-      <hr style="border:none;border-top:1px solid #1f2736;margin:14px 0">
-      <div class="row">
-        <input id="extraInput" placeholder="Titre perso (ou ?title= dans l’URL)" style="flex:1 1 auto">
-        <button id="applyExtra" class="pill">Ajouter titre</button>
+    <section class="grid">
+      <div class="card">
+        <span class="pill">Réponse JSON</span>
+        <pre id="out"><code>// Le résultat apparaîtra ici…</code></pre>
       </div>
-      <p class="muted" style="margin:10px 0 0">
-        Endpoints : <code>/api/{platform}/random</code> • <code>/api/{platform}/search</code> •
-        <code>/api/{platform}/stream/{id}</code> • <code>/api/{platform}/download/{id}</code>
-      </p>
-    </aside>
-  </section>
-</main>
+      <div class="card">
+        <span class="pill">Infos détectées</span>
+        <img id="thumb" class="thumb" alt="Miniature" />
+        <div id="info" class="help" style="margin-top:8px;"></div>
+      </div>
+    </section>
 
-<footer>© 2025 • Single‑file responsive demo</footer>
+    <section class="card">
+      <span class="pill">Requête</span>
+      <pre id="req"><code>// L’URL de test apparaîtra ici…</code></pre>
+    </section>
+  </main>
 
-<div class="gate" id="gate" role="dialog" aria-modal="true">
-  <div class="box">
-    <h2>Contenu 18+</h2>
-    <p class="muted">En continuant, tu confirmes être majeur. Cette page ne fait qu’appeler une API distante.</p>
-    <div class="row" style="justify-content:center;margin-top:10px">
-      <button id="leave" class="pill">Quitter</button>
-      <button id="enter" class="primary pill">J’ai 18+ ans</button>
-    </div>
-  </div>
-</div>
+  <footer>Made for quick testing — Vezxa</footer>
 
-<script>
-const BASE = "https://web-production-7115f.up.railway.app";
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const endpoint = $("endpoint");
+    const tturl = $("tturl");
+    const go = $("go");
+    const out = $("out");
+    const info = $("info");
+    const thumb = $("thumb");
+    const req = $("req");
+    const stat = $("stat");
 
-const ui = {
-  platform: document.getElementById("platform"),
-  btnRandom: document.getElementById("btnRandom"),
-  q: document.getElementById("q"),
-  btnSearch: document.getElementById("btnSearch"),
-  btnJSON: document.getElementById("btnJSON"),
-  results: document.getElementById("results"),
-  title: document.getElementById("title"),
-  extra: document.getElementById("extra"),
-  extraInput: document.getElementById("extraInput"),
-  applyExtra: document.getElementById("applyExtra"),
-  status: document.getElementById("status"),
-  type: document.getElementById("type"),
-  media: document.getElementById("media"),
-  kvDuration: document.getElementById("kvDuration"),
-  kvRating: document.getElementById("kvRating"),
-  kvViews: document.getElementById("kvViews"),
-  kvId: document.getElementById("kvId"),
-  openStream: document.getElementById("openStream"),
-  openDownload: document.getElementById("openDownload"),
-  codeStream: document.getElementById("codeStream"),
-  codeDownload: document.getElementById("codeDownload"),
-  copyStream: document.getElementById("copyStream"),
-  copyDownload: document.getElementById("copyDownload"),
-  gate: document.getElementById("gate"),
-  enter: document.getElementById("enter"),
-  leave: document.getElementById("leave"),
-};
-
-function setBadge(el, text, ok){ el.textContent = text; el.classList.toggle("ok", ok===true); el.classList.toggle("err", ok===false); }
-function fmtViews(n){ if(typeof n!=="number") return String(n ?? "—"); if(n>=1e6) return (n/1e6).toFixed(1).replace(".0","")+" M"; if(n>=1e3) return (n/1e3).toFixed(1).replace(".0","")+" k"; return String(n); }
-function asAbs(path){ try{ return new URL(path, BASE).toString(); } catch{ return null; } }
-function applyExtraTitle(t){
-  const v=(t||"").trim(); ui.extra.textContent=v;
-  const u=new URL(location.href); v?u.searchParams.set("title",v):u.searchParams.delete("title"); history.replaceState(null,"",u.toString());
-}
-(function initExtraFromURL(){ const t=new URL(location.href).searchParams.get("title"); if(t){ ui.extra.textContent=t; ui.extraInput.value=t; } })();
-
-function renderDetail(d, platform){
-  // d: { id, title, duration, rating, views, ... }
-  ui.title.textContent = d.title || "Sans titre";
-  ui.kvDuration.textContent = d.duration || "—";
-  ui.kvRating.textContent = d.rating || "—";
-  ui.kvViews.textContent = fmtViews(d.views);
-  ui.kvId.textContent = d.id || "—";
-
-  const streamURL = asAbs(`/api/${platform}/stream/${encodeURIComponent(d.id)}`);
-  const downloadURL = asAbs(`/api/${platform}/download/${encodeURIComponent(d.id)}`);
-
-  ui.openStream.href = streamURL || "#";
-  ui.openDownload.href = downloadURL || "#";
-  ui.codeStream.textContent = streamURL || "—";
-  ui.codeDownload.textContent = downloadURL || "—";
-
-  setBadge(ui.status, "Statut : OK", true);
-  setBadge(ui.type, "Type : vidéo", true);
-
-  ui.media.innerHTML = "";
-  if(streamURL){
-    const v = document.createElement("video");
-    v.setAttribute("controls","true");
-    v.setAttribute("playsinline","true");
-    v.setAttribute("preload","metadata");
-    v.src = streamURL;
-    ui.media.appendChild(v);
-  }else{
-    const div=document.createElement("div"); div.style.color="#9aa4b2"; div.style.padding="10px"; div.textContent="Aperçu indisponible.";
-    ui.media.appendChild(div);
-  }
-}
-
-async function jsonGET(url){
-  const r = await fetch(url);
-  if(!r.ok) throw new Error("HTTP "+r.status);
-  return r.json();
-}
-
-async function doRandom(){
-  setBadge(ui.status,"Statut : chargement…");
-  ui.media.innerHTML="";
-  const plat = ui.platform.value;
-  try{
-    const data = await jsonGET(`${BASE}/api/${plat}/random`);
-    // le backend peut renvoyer {success:true,data:{...}} ou directement un objet
-    const d = data.data || data;
-    renderDetail(d, plat);
-  }catch(e){
-    setBadge(ui.status,"Statut : erreur",false);
-    setBadge(ui.type,"Type : —");
-    ui.media.innerHTML = `<div style="padding:10px;color:#ffb3b3">Erreur: ${e.message}</div>`;
-  }
-}
-
-async function doSearch(){
-  const plat = ui.platform.value;
-  const q = (ui.q.value||"").trim();
-  if(!q) return;
-  setBadge(ui.status,"Statut : recherche…");
-  ui.results.innerHTML = `<div class="muted">Recherche en cours…</div>`;
-  try{
-    const data = await jsonGET(`${BASE}/api/${plat}/search?q=${encodeURIComponent(q)}`);
-    const arr = data.data || data.results || data || [];
-    ui.results.innerHTML = "";
-    if(!Array.isArray(arr) || !arr.length){
-      ui.results.innerHTML = `<div class="muted">Aucun résultat.</div>`;
-      setBadge(ui.status,"Statut : OK",true); return;
-    }
-    arr.slice(0,20).forEach(item=>{
-      // on suppose {id,title,duration,views,rating}
-      const div = document.createElement("div");
-      div.className="item";
-      div.innerHTML = `<strong>${item.title||"Sans titre"}</strong><br>
-        <span class="muted">${item.duration||"—"} • ${fmtViews(item.views)} • ${item.rating||"—"}</span>`;
-      div.addEventListener("click",()=>renderDetail(item, plat));
-      ui.results.appendChild(div);
+    $("sample").addEventListener("click", () => {
+      tturl.value = "https://www.tiktok.com/@scout2015/video/6718335390845095173";
     });
-    setBadge(ui.status,"Statut : OK",true);
-  }catch(e){
-    ui.results.innerHTML = `<div class="muted">Erreur: ${e.message}</div>`;
-    setBadge(ui.status,"Statut : erreur",false);
-  }
-}
+    $("clear").addEventListener("click", () => {
+      tturl.value = ""; out.innerHTML = "<code>// Le résultat apparaîtra ici…</code>";
+      thumb.src = ""; req.innerHTML = "<code>// L’URL de test apparaîtra ici…</code>"; stat.textContent = "Prêt.";
+    });
 
-// events
-ui.btnRandom.addEventListener("click", doRandom);
-ui.btnSearch.addEventListener("click", doSearch);
-ui.q.addEventListener("keydown", e=>{ if(e.key==="Enter") doSearch(); });
-ui.btnJSON.addEventListener("click", async ()=>{
-  try{
-    const plat = ui.platform.value;
-    const r = await fetch(`${BASE}/api/${plat}/random`); const t = await r.text();
-    await navigator.clipboard.writeText(t);
-    ui.btnJSON.textContent = "JSON copié ✓"; setTimeout(()=>ui.btnJSON.textContent="JSON",1000);
-  }catch{ ui.btnJSON.textContent = "Échec"; setTimeout(()=>ui.btnJSON.textContent="JSON",1000); }
-});
-ui.copyStream.addEventListener("click", async ()=>{
-  try{ await navigator.clipboard.writeText(ui.codeStream.textContent); ui.copyStream.textContent="Copié ✓"; }
-  catch{ ui.copyStream.textContent="Échec"; }
-  setTimeout(()=>ui.copyStream.textContent="Copier stream",900);
-});
-ui.copyDownload.addEventListener("click", async ()=>{
-  try{ await navigator.clipboard.writeText(ui.codeDownload.textContent); ui.copyDownload.textContent="Copié ✓"; }
-  catch{ ui.copyDownload.textContent="Échec"; }
-  setTimeout(()=>ui.copyDownload.textContent="Copier download",900);
-});
-ui.applyExtra.addEventListener("click", ()=>applyExtraTitle(ui.extraInput.value));
-ui.extraInput.addEventListener("keydown", e=>{ if(e.key==="Enter") applyExtraTitle(ui.extraInput.value); });
+    function buildUrl() {
+      return endpoint.value.trim() + "?url=" + encodeURIComponent(tturl.value.trim());
+    }
 
-// age gate
-ui.enter.addEventListener("click", ()=>{ ui.gate.style.display="none"; });
-ui.leave.addEventListener("click", ()=>{ location.href="about:blank"; });
+    async function test() {
+      const full = buildUrl();
+      req.innerHTML = "<code>" + full + "</code>";
+      stat.textContent = "Requête...";
+      try {
+        const r = await fetch(full);
+        const data = await r.json();
+        out.textContent = JSON.stringify(data, null, 2);
+        if (data.thumbnail_url) thumb.src = data.thumbnail_url;
+        if (data.title || data.author) {
+          info.innerHTML = (data.title ? `<div><b>Titre:</b> ${data.title}</div>` : "") +
+                           (data.author ? `<div><b>Auteur:</b> ${data.author}</div>` : "");
+        }
+        stat.textContent = "Terminé.";
+      } catch (e) {
+        out.textContent = e;
+        stat.textContent = "Erreur.";
+      }
+    }
 
-// optionnel: lancer une première requête random
-// doRandom();
-</script>
+    go.addEventListener("click", test);
+    tturl.addEventListener("keydown", (e)=>{ if(e.key==="Enter") test(); });
+  </script>
 </body>
 </html>
